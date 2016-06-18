@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyIoC.Core", "EasyIoC.Core\EasyIoC.Core.csproj", "{03833DA3-1D68-437F-A4D4-5DDE8191DB1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyIoC.Mvc", "EasyIoC.Mvc\EasyIoC.Mvc.csproj", "{0E4F7B88-C413-42E3-9B07-F7694728D596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyIoC.WebApi", "EasyIoC.WebApi\EasyIoC.WebApi.csproj", "{A7CE2CDE-331C-44E7-990E-8717D9B12225}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03833DA3-1D68-437F-A4D4-5DDE8191DB1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03833DA3-1D68-437F-A4D4-5DDE8191DB1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03833DA3-1D68-437F-A4D4-5DDE8191DB1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03833DA3-1D68-437F-A4D4-5DDE8191DB1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4F7B88-C413-42E3-9B07-F7694728D596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4F7B88-C413-42E3-9B07-F7694728D596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4F7B88-C413-42E3-9B07-F7694728D596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4F7B88-C413-42E3-9B07-F7694728D596}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7CE2CDE-331C-44E7-990E-8717D9B12225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7CE2CDE-331C-44E7-990E-8717D9B12225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7CE2CDE-331C-44E7-990E-8717D9B12225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7CE2CDE-331C-44E7-990E-8717D9B12225}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
