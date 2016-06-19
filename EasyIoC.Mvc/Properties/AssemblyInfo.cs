@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EasyIoC.Mvc")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("MVC 5 library for EasyIoC. A simple Inversion of Control system.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("EasyIoC.Mvc")]
