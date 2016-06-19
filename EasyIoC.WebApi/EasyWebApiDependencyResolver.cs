@@ -12,7 +12,8 @@ namespace EasyIoC.WebApi
     {
         public EasyWebApiHttpControllerActivator(Assembly assembly)
         {
-            _controllerContainer = new EasyWebApiControllerContainer(assembly, new EasyServiceContainer(assembly));
+            _controllerContainer = new EasyWebApiControllerContainer(new EasyServiceContainer(assembly));
+            _controllerContainer.RegisterControllers(assembly);
         }
 
 
@@ -27,6 +28,6 @@ namespace EasyIoC.WebApi
         }
 
 
-        private readonly IEasyContainer _controllerContainer;
+        private readonly EasyControllerContainer<IHttpController> _controllerContainer;
     }
 }

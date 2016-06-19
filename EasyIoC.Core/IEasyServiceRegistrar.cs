@@ -2,6 +2,6 @@
 {
     public interface IEasyServiceRegistrar
     {
-        void RegisterServices(IEasyContainer container);
+        void RegisterServices(IEasyServiceContainer container);
     }
 }

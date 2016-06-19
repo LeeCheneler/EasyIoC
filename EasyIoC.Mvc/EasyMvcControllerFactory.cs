@@ -13,8 +13,10 @@ namespace EasyIoC.Mvc
     {
         public EasyMvcControllerFactory(Assembly assembly)
         {
-            _controllerContainer = new EasyMvcControllerContainer(assembly, new EasyServiceContainer(assembly));
-            foreach (var type in assembly.GetTypes().Where(t => t.IsIController()))
+            _controllerContainer = new EasyMvcControllerContainer(new EasyServiceContainer(assembly));
+            _controllerContainer.RegisterControllers(assembly);
+            var controllerType = typeof(IController);
+            foreach (var type in assembly.GetTypes().Where(t => t.GetInterfaces().Any(i => i == controllerType)))
             {
                 _controllerTypes.Add(type.FullName.ToLower(), type);
             }
@@ -46,7 +48,7 @@ namespace EasyIoC.Mvc
         }
 
 
-        private readonly IEasyContainer _controllerContainer;
+        private readonly EasyControllerContainer<IController> _controllerContainer;
         private readonly Dictionary<string, Type> _controllerTypes = new Dictionary<string, Type>();
     }
 }

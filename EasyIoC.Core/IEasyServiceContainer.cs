@@ -2,7 +2,7 @@
 
 namespace EasyIoC.Core
 {
-    public interface IEasyContainer
+    public interface IEasyServiceContainer
     {
         void Register<TAbstraction, TConcrete>();
         void Register(Type abstraction, Type concrete);

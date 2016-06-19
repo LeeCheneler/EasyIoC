@@ -1,30 +1,13 @@
 ﻿using EasyIoC.Core;
-using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
 
 namespace EasyIoC.Mvc
 {
-    public class EasyMvcControllerContainer : BaseEasyControllerContainer
+    public class EasyMvcControllerContainer : EasyControllerContainer<IController>
     {
-        public EasyMvcControllerContainer(Assembly assembly, IEasyContainer serviceContainer)
-            : base(assembly, serviceContainer)
+        public EasyMvcControllerContainer(IEasyServiceContainer serviceContainer)
+            : base(serviceContainer)
         {
-        }
-
-
-        protected override void RegisterControllers(Assembly assembly)
-        {
-            var iControllerType = typeof(Controller);
-            foreach (var controllerType in assembly.GetTypes().Where(t => t.IsIController()))
-            {
-                Register(controllerType, controllerType
-                    ?.GetConstructors()
-                    ?.FirstOrDefault()
-                    ?.GetParameters()
-                    ?.FirstOrDefault()
-                    ?.ParameterType);
-            }
         }
     }
 }

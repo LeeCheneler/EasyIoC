@@ -1,14 +1,19 @@
-﻿using System;
+﻿using EasyIoC.Core.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 namespace EasyIoC.Core
 {
-    public class EasyServiceContainer : IEasyContainer
+    public class EasyServiceContainer : IEasyServiceContainer
     {
         public EasyServiceContainer(Assembly assembly)
         {
+            if (assembly == null)
+            {
+                throw new ArgumentNullException(nameof(assembly));
+            }
             RegisterServiceRegistrars(assembly);
         }
 
@@ -21,6 +26,21 @@ namespace EasyIoC.Core
 
         public void Register(Type abstraction, Type concrete)
         {
+            if (abstraction == null)
+            {
+                throw new ArgumentNullException(nameof(abstraction));
+            }
+            if (concrete == null)
+            {
+                throw new ArgumentNullException(nameof(concrete));
+            }
+
+            if (!concrete.IsSubclassOf(abstraction)
+                && !concrete.GetInterfaces().Contains(abstraction))
+            {
+                throw new TypeMismatchException(abstraction, concrete);
+            }
+                    
             if (!_serviceMap.ContainsKey(abstraction))
             {
                 _serviceMap.Add(abstraction, concrete);
@@ -47,6 +67,10 @@ namespace EasyIoC.Core
 
         public object Activate(Type abstraction)
         {
+            if (!_serviceMap.ContainsKey(abstraction))
+            {
+                throw new NotRegisteredException(abstraction);
+            }
             return Activator.CreateInstance(_serviceMap[abstraction]);
         }
 
