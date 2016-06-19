@@ -4,5 +4,11 @@ before_build:
 - nuget restore
 
 artifacts:
-  - path: '**\*.nupkg'
-    name: EasyIoC
+  - path: '**\EasyIoC.Core.nupkg'
+    name: EasyIoC.Core
+    
+  - path: '**\EasyIoC.Mvc.nupkg'
+    name: EasyIoC.Mvc
+    
+  - path: '**\EasyIoC.WebApi.nupkg'
+    name: EasyIoC.WebApi
