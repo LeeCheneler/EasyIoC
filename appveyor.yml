@@ -8,4 +8,4 @@ deploy:
   api_key:
     secure: 4pJqAoCN3BtpxvqEtb+49KIhG2yz1eDRpcKtJb+h7GvQUWBEYNuTMBcI28HJ9SXY
   skip_symbols: false
-  artifact: /.*\.nupkg/
+  artifact: /EasyIoC.Core/bin/Release/*.nupkg
