@@ -3,9 +3,6 @@ configuration: Release
 before_build:
 - nuget restore
 
-deploy:
-  provider: NuGet
-  api_key:
-    secure: 4pJqAoCN3BtpxvqEtb+49KIhG2yz1eDRpcKtJb+h7GvQUWBEYNuTMBcI28HJ9SXY
-  skip_symbols: false
-  artifact: /EasyIoC.Core/bin/Release/*.nupkg
+artifacts:
+  - path: **\*.nupkg
+    name: EasyIoC
