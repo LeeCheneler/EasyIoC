@@ -42,7 +42,7 @@ namespace EasyIoC.Core
                 throw new TypeMismatchException(abstraction, concrete);
             }
 
-            _controllerMap.Add(abstraction, GetServiceActivator(concrete.GetConstructors()[0]));
+            _serviceMap.Add(abstraction, GetServiceActivator(concrete.GetConstructors()[0]));
         }
 
 
@@ -117,8 +117,7 @@ namespace EasyIoC.Core
             return (ServiceActivator)lambda.Compile();
         }
 
-
-        private readonly Dictionary<Type, ServiceActivator> _controllerMap = new Dictionary<Type, ServiceActivator>();
+        
         private delegate object ServiceActivator(params object[] args);
         private readonly Dictionary<Type, ServiceActivator> _serviceMap = new Dictionary<Type, ServiceActivator>();
     }
