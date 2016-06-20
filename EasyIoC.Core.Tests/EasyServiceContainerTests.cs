@@ -187,5 +187,143 @@ namespace EasyIoC.Tests
                 container.Activate<IFoo>();
             });
         }
+
+
+        [Fact]
+        public void Register_AlreadyRegistered_ThrowsAlreadyRegisteredException()
+        {
+            // arrange 
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+            container.Register(typeof(IFoo), typeof(Foo));
+
+            // assert
+            Assert.Throws<AlreadyRegisteredException>(() =>
+            {
+                // act
+                container.Register(typeof(IFoo), typeof(Foo));
+            });
+        }
+
+
+        [Fact]
+        public void GenericRegister_AlreadyRegistered_ThrowsAlreadyRegisteredException()
+        {
+            // arrange 
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+            container.Register<IFoo, Foo>();
+
+            // assert
+            Assert.Throws<AlreadyRegisteredException>(() =>
+            {
+                // act
+                container.Register<IFoo, Foo>();
+            });
+        }
+
+
+        [Fact]
+        public void GenericRegisterSingleton_AlreadyRegistered_ThrowsAlreadyRegiesteredException()
+        {
+            // arrange 
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+            container.Register<IFoo, Foo>();
+
+            // assert
+            Assert.Throws<AlreadyRegisteredException>(() =>
+            {
+                // act
+                container.RegisterSingleton<IFoo, Foo>();
+            });
+        }
+
+
+        [Fact]
+        public void RegisterSingleton_AlreadyRegistered_ThrowsAlreadyRegiesteredException()
+        {
+            // arrange 
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+            container.Register(typeof(IFoo), typeof(Foo));
+
+            // assert
+            Assert.Throws<AlreadyRegisteredException>(() =>
+            {
+                // act
+                container.RegisterSingleton(typeof(IFoo), typeof(Foo));
+            });
+        }
+
+
+        [Fact]
+        public void RegisterSingleton_NullAbstraction_ThrowsArgumentNullException()
+        {
+            // arrange 
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+
+            // assert
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                // act
+                container.RegisterSingleton(null, typeof(Foo));
+            });
+        }
+
+
+        [Fact]
+        public void RegisterSingleton_NullConcrete_ThrowsArgumentNullException()
+        {
+            // arrange 
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+
+            // assert
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                // act
+                container.RegisterSingleton(typeof(IFoo), null);
+            });
+        }
+
+
+        [Fact]
+        public void RegisterSingleton_GoodArgs_IsRegisteredTrue()
+        {
+            // arrange
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+
+            // act
+            container.RegisterSingleton(typeof(IFoo), typeof(Foo));
+
+            // assert
+            Assert.True(container.IsRegistered<IFoo>());
+        }
+
+
+        [Fact]
+        public void GenericRegisterSingleton_GoodArgs_IsRegisteredTrue()
+        {
+            // arrange
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+
+            // act
+            container.RegisterSingleton<IFoo, Foo>();
+
+            // assert
+            Assert.True(container.IsRegistered<IFoo>());
+        }
+
+
+        [Fact]
+        public void Activate_GettingSingletonService_ReturnsSameService()
+        {
+            // arrange
+            var container = new EasyServiceContainer(Assembly.GetExecutingAssembly());
+            container.RegisterSingleton<IFoo, Foo>();
+
+            // act
+            var foo1 = container.Activate<IFoo>();
+            var foo2 = container.Activate<IFoo>();
+
+            // assert
+            Assert.Same(foo1, foo2);
+        }
     }
 }

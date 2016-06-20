@@ -7,6 +7,9 @@ using System.Reflection;
 
 namespace EasyIoC.Core
 {
+    public delegate object ServiceActivator(params object[] args);
+
+
     public class EasyServiceContainer : IEasyServiceContainer
     {
         public EasyServiceContainer(Assembly assembly)
@@ -27,22 +30,23 @@ namespace EasyIoC.Core
 
         public void Register(Type abstraction, Type concrete)
         {
-            if (abstraction == null)
-            {
-                throw new ArgumentNullException(nameof(abstraction));
-            }
-            if (concrete == null)
-            {
-                throw new ArgumentNullException(nameof(concrete));
-            }
-
-            if (!concrete.IsSubclassOf(abstraction)
-                && !concrete.GetInterfaces().Contains(abstraction))
-            {
-                throw new TypeMismatchException(abstraction, concrete);
-            }
+            PreregistrationCheck(abstraction, concrete);
 
             _serviceMap.Add(abstraction, GetServiceActivator(concrete.GetConstructors()[0]));
+        }
+
+
+        public void RegisterSingleton<TAbstraction, TConcrete>()
+        {
+            RegisterSingleton(typeof(TAbstraction), typeof(TConcrete));
+        }
+
+
+        public void RegisterSingleton(Type abstraction, Type concrete)
+        {
+            PreregistrationCheck(abstraction, concrete);
+
+            _singletonServiceMap.Add(abstraction, new SingletonServiceWrapper(GetServiceActivator(concrete.GetConstructors()[0])));
         }
 
 
@@ -54,7 +58,8 @@ namespace EasyIoC.Core
 
         public bool IsRegistered(Type abstraction)
         {
-            return _serviceMap.ContainsKey(abstraction);
+            return _serviceMap.ContainsKey(abstraction) ||
+                _singletonServiceMap.ContainsKey(abstraction);
         }
 
 
@@ -66,11 +71,42 @@ namespace EasyIoC.Core
 
         public object Activate(Type abstraction)
         {
-            if (!_serviceMap.ContainsKey(abstraction))
+            if (_serviceMap.ContainsKey(abstraction))
             {
-                throw new NotRegisteredException(abstraction);
+                return _serviceMap[abstraction].Invoke();
             }
-            return _serviceMap[abstraction].Invoke();
+            else if (_singletonServiceMap.ContainsKey(abstraction))
+            {
+                return _singletonServiceMap[abstraction].Get();
+            }
+
+            throw new NotRegisteredException(abstraction);
+        }
+        
+
+        private void PreregistrationCheck(Type abstraction, Type concrete)
+        {
+            if (abstraction == null)
+            {
+                throw new ArgumentNullException(nameof(abstraction));
+            }
+
+            if (concrete == null)
+            {
+                throw new ArgumentNullException(nameof(concrete));
+            }
+
+            if (!concrete.IsSubclassOf(abstraction)
+                && !concrete.GetInterfaces().Contains(abstraction))
+            {
+                throw new TypeMismatchException(abstraction, concrete);
+            }
+
+            if (_serviceMap.ContainsKey(abstraction) ||
+                _singletonServiceMap.ContainsKey(abstraction))
+            {
+                throw new AlreadyRegisteredException(abstraction);
+            }
         }
 
 
@@ -117,8 +153,8 @@ namespace EasyIoC.Core
             return (ServiceActivator)lambda.Compile();
         }
 
-        
-        private delegate object ServiceActivator(params object[] args);
+
         private readonly Dictionary<Type, ServiceActivator> _serviceMap = new Dictionary<Type, ServiceActivator>();
+        private readonly Dictionary<Type, SingletonServiceWrapper> _singletonServiceMap = new Dictionary<Type, SingletonServiceWrapper>();
     }
 }

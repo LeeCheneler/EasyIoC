@@ -6,6 +6,8 @@ namespace EasyIoC.Core
     {
         void Register<TAbstraction, TConcrete>();
         void Register(Type abstraction, Type concrete);
+        void RegisterSingleton<TAbstraction, TConcrete>();
+        void RegisterSingleton(Type abstraction, Type concrete);
         bool IsRegistered<TAbstraction>();
         bool IsRegistered(Type abstraction);
         object Activate<TAbstraction>();
