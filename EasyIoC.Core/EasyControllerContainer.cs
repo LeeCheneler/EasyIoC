@@ -37,7 +37,7 @@ namespace EasyIoC.Core
                 throw new TypeMismatchException(controller, _baseControllerType);
             }
 
-            _controllerMap.Add(controller, GetObjectActivator(controller.GetConstructors()[0]));
+            _controllerMap.Add(controller, GetControllerActivator(controller.GetConstructors()[0]));
         }
 
         
@@ -83,7 +83,7 @@ namespace EasyIoC.Core
         }
 
 
-        protected ControllerActivator GetObjectActivator(ConstructorInfo ctor)
+        private ControllerActivator GetControllerActivator(ConstructorInfo ctor)
         {
             Type type = ctor.DeclaringType;
             ParameterInfo[] paramsInfo = ctor.GetParameters();
@@ -118,8 +118,8 @@ namespace EasyIoC.Core
 
 
         protected readonly IEasyServiceContainer _serviceContainer;
-        protected readonly Dictionary<Type, ControllerActivator> _controllerMap = new Dictionary<Type, ControllerActivator>();
-        protected delegate object ControllerActivator(params object[] args);
+        private readonly Dictionary<Type, ControllerActivator> _controllerMap = new Dictionary<Type, ControllerActivator>();
+        private delegate object ControllerActivator(params object[] args);
         private readonly Type _baseControllerType = typeof(TBaseController);
     }
 }
