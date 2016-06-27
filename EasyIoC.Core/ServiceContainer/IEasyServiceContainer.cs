@@ -1,11 +1,12 @@
 ﻿using System;
 
-namespace EasyIoC.Core
+namespace EasyIoC.Core.ServiceContainer
 {
     public interface IEasyServiceContainer
     {
         void Register<TAbstraction, TConcrete>();
         void Register(Type abstraction, Type concrete);
+        void Register<TAbstraction>(Func<object> func);
         void RegisterSingleton<TAbstraction, TConcrete>();
         void RegisterSingleton(Type abstraction, Type concrete);
         bool IsRegistered<TAbstraction>();

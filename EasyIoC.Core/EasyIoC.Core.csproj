@@ -42,16 +42,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EasyControllerContainer.cs" />
-    <Compile Include="EasyServiceContainer.cs" />
+    <Compile Include="ControllerContainer\EasyControllerContainer.cs" />
+    <Compile Include="Exceptions\NoParameterlessConstructorException.cs" />
+    <Compile Include="ServiceContainer\EasyServiceContainer.cs" />
     <Compile Include="Exceptions\AlreadyRegisteredException.cs" />
     <Compile Include="Exceptions\TypeMismatchException.cs" />
-    <Compile Include="IEasyServiceContainer.cs" />
-    <Compile Include="IEasyServiceRegistrar.cs" />
+    <Compile Include="ServiceContainer\Entries\FuncEntry.cs" />
+    <Compile Include="ServiceContainer\IEasyServiceContainer.cs" />
+    <Compile Include="ServiceRegistrar\IEasyServiceRegistrar.cs" />
     <Compile Include="Exceptions\NotRegisteredException.cs" />
+    <Compile Include="ServiceContainer\Entries\IEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SingletonServiceWrapper.cs" />
+    <Compile Include="ServiceActivatorBuilder.cs" />
+    <Compile Include="ServiceContainer\Entries\SingletonEntry.cs" />
     <Compile Include="TypeExtensions.cs" />
+    <Compile Include="ServiceContainer\Entries\TypeEntry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EasyIoC.Core.nuspec" />

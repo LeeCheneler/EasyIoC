@@ -1,11 +1,12 @@
-﻿using System;
+﻿using EasyIoC.Core.ServiceRegistrar;
+using System;
 using System.Linq;
 
 namespace EasyIoC.Core
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
-        public static bool IsIEasyServiceRegistrar(this Type type)
+        internal static bool IsIEasyServiceRegistrar(this Type type)
         {
             return type.GetInterfaces().Contains(IEASYSERVICEREGISTRAR_TYPE);
         }

@@ -1,4 +1,6 @@
-﻿namespace EasyIoC.Core
+﻿using EasyIoC.Core.ServiceContainer;
+
+namespace EasyIoC.Core.ServiceRegistrar
 {
     public interface IEasyServiceRegistrar
     {

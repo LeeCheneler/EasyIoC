@@ -1,4 +1,5 @@
-﻿using EasyIoC.Core;
+﻿using EasyIoC.Core.ServiceContainer;
+using EasyIoC.Core.ServiceRegistrar;
 
 namespace EasyIoC.Tests.TestResources
 {

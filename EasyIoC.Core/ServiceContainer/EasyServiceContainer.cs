@@ -1,15 +1,13 @@
 ﻿using EasyIoC.Core.Exceptions;
+using EasyIoC.Core.ServiceContainer.Entries;
+using EasyIoC.Core.ServiceRegistrar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
-namespace EasyIoC.Core
+namespace EasyIoC.Core.ServiceContainer
 {
-    public delegate object ServiceActivator(params object[] args);
-
-
     public class EasyServiceContainer : IEasyServiceContainer
     {
         public EasyServiceContainer(Assembly assembly)
@@ -32,7 +30,7 @@ namespace EasyIoC.Core
         {
             PreregistrationCheck(abstraction, concrete);
 
-            _serviceMap.Add(abstraction, GetServiceActivator(concrete.GetConstructors()[0]));
+            AddEntry(abstraction.GetHashCode(), new TypeEntry(concrete));
         }
 
 
@@ -46,7 +44,17 @@ namespace EasyIoC.Core
         {
             PreregistrationCheck(abstraction, concrete);
 
-            _singletonServiceMap.Add(abstraction, new SingletonServiceWrapper(GetServiceActivator(concrete.GetConstructors()[0])));
+            AddEntry(abstraction.GetHashCode(), new SingletonEntry(concrete));
+        }
+
+
+        public void Register<TAbstraction>(Func<object> func) 
+        {
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+            AddEntry(typeof(TAbstraction).GetHashCode(), new FuncEntry(func));
         }
 
 
@@ -58,8 +66,7 @@ namespace EasyIoC.Core
 
         public bool IsRegistered(Type abstraction)
         {
-            return _serviceMap.ContainsKey(abstraction) ||
-                _singletonServiceMap.ContainsKey(abstraction);
+            return _serviceMap.ContainsKey(abstraction.GetHashCode());
         }
 
 
@@ -71,13 +78,15 @@ namespace EasyIoC.Core
 
         public object Activate(Type abstraction)
         {
-            if (_serviceMap.ContainsKey(abstraction))
+            if (abstraction == null)
             {
-                return _serviceMap[abstraction].Invoke();
+                throw new ArgumentNullException(nameof(abstraction));
             }
-            else if (_singletonServiceMap.ContainsKey(abstraction))
+
+            int key = abstraction.GetHashCode();
+            if (_serviceMap.ContainsKey(key))
             {
-                return _singletonServiceMap[abstraction].Get();
+                return _serviceMap[key].GetService();
             }
 
             throw new NotRegisteredException(abstraction);
@@ -102,8 +111,7 @@ namespace EasyIoC.Core
                 throw new TypeMismatchException(abstraction, concrete);
             }
 
-            if (_serviceMap.ContainsKey(abstraction) ||
-                _singletonServiceMap.ContainsKey(abstraction))
+            if (IsRegistered(abstraction))
             {
                 throw new AlreadyRegisteredException(abstraction);
             }
@@ -120,41 +128,12 @@ namespace EasyIoC.Core
         }
 
 
-        private ServiceActivator GetServiceActivator(ConstructorInfo ctor)
+        private void AddEntry(int key, IEntry entry)
         {
-            Type type = ctor.DeclaringType;
-            ParameterInfo[] paramsInfo = ctor.GetParameters();
-
-            //create a single param of type object[]
-            ParameterExpression param = Expression.Parameter(typeof(object[]), "args");
-
-            Expression[] argsExp = new Expression[paramsInfo.Length];
-
-            //pick each arg from the params array 
-            //and create a typed expression of them
-            for (int i = 0; i < paramsInfo.Length; i++)
-            {
-                Expression index = Expression.Constant(i);
-                Type paramType = paramsInfo[i].ParameterType;
-                Expression paramAccessorExp = Expression.ArrayIndex(param, index);
-                Expression paramCastExp = Expression.Convert(paramAccessorExp, paramType);
-                argsExp[i] = paramCastExp;
-            }
-
-            //make a NewExpression that calls the
-            //ctor with the args we just created
-            NewExpression newExp = Expression.New(ctor, argsExp);
-
-            //create a lambda with the New
-            //Expression as body and our param object[] as arg
-            LambdaExpression lambda = Expression.Lambda(typeof(ServiceActivator), newExp, param);
-
-            //compile it
-            return (ServiceActivator)lambda.Compile();
+            _serviceMap.Add(key, entry);
         }
 
 
-        private readonly Dictionary<Type, ServiceActivator> _serviceMap = new Dictionary<Type, ServiceActivator>();
-        private readonly Dictionary<Type, SingletonServiceWrapper> _singletonServiceMap = new Dictionary<Type, SingletonServiceWrapper>();
+        private readonly Dictionary<int, IEntry> _serviceMap = new Dictionary<int, IEntry>();
     }
 }
