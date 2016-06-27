@@ -10,8 +10,16 @@ using System.Web.Routing;
 
 namespace EasyIoC.Mvc
 {
+    /// <summary>
+    /// EasyIoCs replacement Mvc 5 controller factory. 
+    /// Using this controller factory allows you to inject services into controller constructors.
+    /// </summary>
     public class EasyMvcControllerFactory : DefaultControllerFactory
     {
+        /// <summary>
+        /// Construct EasyMvcControllerFactory.
+        /// </summary>
+        /// <param name="assembly"></param>
         public EasyMvcControllerFactory(Assembly assembly)
         {
             _controllerContainer = new EasyMvcControllerContainer(new EasyServiceContainer(assembly));
@@ -24,6 +32,13 @@ namespace EasyIoC.Mvc
         }
 
 
+        /// <summary>
+        /// Create a controller.
+        /// </summary>
+        /// <param name="requestContext"></param>
+        /// <param name="controllerName"></param>
+        /// <returns></returns>
+        /// <remarks>throws 404 HttpException if a suitable controller is not found.</remarks>
         public override IController CreateController(RequestContext requestContext, string controllerName)
         {
             string ns = (requestContext.RouteData.DataTokens["Namespaces"] as IEnumerable<string>)?.First().ToLower();
@@ -43,6 +58,10 @@ namespace EasyIoC.Mvc
         }
 
 
+        /// <summary>
+        /// If the controller is disposable then dispose it.
+        /// </summary>
+        /// <param name="controller"></param>
         public override void ReleaseController(IController controller)
         {
             (controller as IDisposable)?.Dispose();

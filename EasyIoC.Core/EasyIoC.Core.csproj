@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControllerContainer\EasyControllerContainer.cs" />
+    <Compile Include="Exceptions\MultipleConstructorException.cs" />
     <Compile Include="Exceptions\NoParameterlessConstructorException.cs" />
     <Compile Include="ServiceContainer\EasyServiceContainer.cs" />
     <Compile Include="Exceptions\AlreadyRegisteredException.cs" />

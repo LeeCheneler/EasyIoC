@@ -7,8 +7,16 @@ using System.Reflection;
 
 namespace EasyIoC.Core.ControllerContainer
 {
-    public class EasyControllerContainer<TBaseController>
+    /// <summary>
+    /// Abstract container to quickly implement controller containers.
+    /// </summary>
+    /// <typeparam name="TBaseController"></typeparam>
+    public abstract class EasyControllerContainer<TBaseController>
     {
+        /// <summary>
+        /// Construct with a service container to feed parameters into controllers constructor.
+        /// </summary>
+        /// <param name="serviceContainer"></param>
         public EasyControllerContainer(IEasyServiceContainer serviceContainer)
         {
             if (serviceContainer == null)
@@ -19,12 +27,20 @@ namespace EasyIoC.Core.ControllerContainer
         }
         
 
+        /// <summary>
+        /// Register a controller.
+        /// </summary>
+        /// <typeparam name="TController"></typeparam>
         public void Register<TController>()
         {
             Register(typeof(TController));
         }
 
 
+        /// <summary>
+        /// Register a controller.
+        /// </summary>
+        /// <param name="controllerType"></param>
         public void Register(Type controllerType)
         {
             if (controllerType == null)
@@ -41,29 +57,55 @@ namespace EasyIoC.Core.ControllerContainer
         }
 
         
+        /// <summary>
+        /// Determine if a controller is registered.
+        /// </summary>
+        /// <typeparam name="TController"></typeparam>
+        /// <returns></returns>
         public bool IsRegistered<TController>()
         {
             return IsRegistered(typeof(TController));
         }
 
 
+        /// <summary>
+        /// Determine if a controller is registered.
+        /// </summary>
+        /// <param name="controllerType"></param>
+        /// <returns></returns>
         public bool IsRegistered(Type controllerType)
         {
             return _controllerMap.ContainsKey(controllerType.GetHashCode());
         }
 
 
+        /// <summary>
+        /// Activate a controller.
+        /// </summary>
+        /// <typeparam name="TController"></typeparam>
+        /// <returns></returns>
         public object Activate<TController>()
         {
             return Activate(typeof(TController));
         }
 
 
+        /// <summary>
+        ///  Activate a controller.
+        /// </summary>
+        /// <param name="controllerType"></param>
+        /// <returns></returns>
         public object Activate(Type controllerType)
         {
             if (controllerType == null)
             {
                 throw new ArgumentNullException(nameof(controllerType));
+            }
+
+            var ctors = controllerType.GetConstructors();
+            if (ctors.Length > 1)
+            {
+                throw new MultipleConstructorException(controllerType);
             }
 
             int key = controllerType.GetHashCode();
@@ -72,13 +114,17 @@ namespace EasyIoC.Core.ControllerContainer
                 throw new NotRegisteredException(controllerType);
             }
 
-            return _controllerMap[key].Invoke(controllerType.GetConstructors()[0].GetParameters().Select(p =>
+            return _controllerMap[key].Invoke(ctors[0].GetParameters().Select(p =>
             {
                 return _serviceContainer.Activate(p.ParameterType);
             }).ToArray());
         }
 
 
+        /// <summary>
+        /// Register controllers in an assembly.
+        /// </summary>
+        /// <param name="assembly"></param>
         public void RegisterControllers(Assembly assembly)
         {
             var baseControllerType = typeof(TBaseController);

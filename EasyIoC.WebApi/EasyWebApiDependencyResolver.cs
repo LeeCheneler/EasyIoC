@@ -9,8 +9,16 @@ using System.Web.Http.Dispatcher;
 
 namespace EasyIoC.WebApi
 {
+    /// <summary>
+    /// EasyIoCs replacement WebApi 2 controller activator. 
+    /// Using this controller activator allows you to inject services into controller constructors.
+    /// </summary>
     public class EasyWebApiHttpControllerActivator : IHttpControllerActivator
     {
+        /// <summary>
+        /// Construct EasyWebApiHttpControllerActivator.
+        /// </summary>
+        /// <param name="assembly"></param>
         public EasyWebApiHttpControllerActivator(Assembly assembly)
         {
             _controllerContainer = new EasyWebApiControllerContainer(new EasyServiceContainer(assembly));
@@ -18,6 +26,14 @@ namespace EasyIoC.WebApi
         }
 
 
+        /// <summary>
+        /// Create controller.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="controllerDescriptor"></param>
+        /// <param name="controllerType"></param>
+        /// <returns></returns>
+        /// <remarks>throws 404 HttpException if a suitable controller is not found.</remarks>
         public IHttpController Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
         {
             if (controllerType != null)
