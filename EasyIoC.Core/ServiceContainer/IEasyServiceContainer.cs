@@ -9,6 +9,7 @@ namespace EasyIoC.Core.ServiceContainer
         void Register<TAbstraction>(Func<object> func);
         void RegisterSingleton<TAbstraction, TConcrete>();
         void RegisterSingleton(Type abstraction, Type concrete);
+        void RegisterSingleton<TAbstraction>(Func<object> func);
         bool IsRegistered<TAbstraction>();
         bool IsRegistered(Type abstraction);
         object Activate<TAbstraction>();

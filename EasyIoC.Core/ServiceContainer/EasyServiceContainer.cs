@@ -74,6 +74,7 @@ namespace EasyIoC.Core.ServiceContainer
             AddEntry(abstraction.GetHashCode(), new SingletonEntry(concrete));
         }
 
+
         /// <summary>
         /// Register a service created via a provided func.
         /// </summary>
@@ -86,6 +87,21 @@ namespace EasyIoC.Core.ServiceContainer
                 throw new ArgumentNullException(nameof(func));
             }
             AddEntry(typeof(TAbstraction).GetHashCode(), new FuncEntry(func));
+        }
+        
+
+        /// <summary>
+        /// Register a service created via a provided func as a singleton.
+        /// </summary>
+        /// <typeparam name="TAbstraction"></typeparam>
+        /// <param name="func"></param>
+        public void RegisterSingleton<TAbstraction>(Func<object> func)
+        {
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+            AddEntry(typeof(TAbstraction).GetHashCode(), new SingletonFuncEntry(func));
         }
 
 

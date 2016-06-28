@@ -50,6 +50,7 @@
     <Compile Include="Exceptions\AlreadyRegisteredException.cs" />
     <Compile Include="Exceptions\TypeMismatchException.cs" />
     <Compile Include="ServiceContainer\Entries\FuncEntry.cs" />
+    <Compile Include="ServiceContainer\Entries\SingletonFuncEntry.cs" />
     <Compile Include="ServiceContainer\IEasyServiceContainer.cs" />
     <Compile Include="ServiceRegistrar\IEasyServiceRegistrar.cs" />
     <Compile Include="Exceptions\NotRegisteredException.cs" />
