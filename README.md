@@ -15,6 +15,8 @@ public class MyEasyServiceRegistrar : IEasyServiceRegistrar
     {
         container.Register<IFoo, Foo>();
         container.Register(typeof(IBar), typeof(Bar));
+        container.RegisterSingleton<ISingletonFoo, SingletonFoo>();
+        container.RegisterSingleton(typeof(ISingletonBar), typeof(SingletonBar));
         
         // Being able to register a delegate to create a service removes the need for single line factory classes
         // that only exist to allow injection of a dependency that requires constructor args...
