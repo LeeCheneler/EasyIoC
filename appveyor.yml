@@ -2,13 +2,3 @@ configuration: Release
 
 before_build:
 - nuget restore
-
-artifacts:
-  - path: 'EasyIoC.Core\bin\Release\*.nupkg'
-    name: EasyIoC.Core.nupkg
-    
-  - path: 'EasyIoC.Mvc\bin\Release\*.nupkg'
-    name: EasyIoC.Mvc.nupkg
-    
-  - path: 'EasyIoC.WebApi\bin\Release\*.nupkg'
-    name: EasyIoC.WebApi.nupkg
