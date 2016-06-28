@@ -1,5 +1,5 @@
 # EasyIoC
-Dependency inject made easy for MVC 5 and Web Api 2. EasyIoC is designed to be quick and easy to setup.
+Dependency injection made easy for MVC 5 and Web Api 2. EasyIoC is designed to be quick and easy to setup.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/nbcvn4d6la5rl6cd/branch/master?svg=true)](https://ci.appveyor.com/project/LeeCheneler/easyioc/branch/master)
 
