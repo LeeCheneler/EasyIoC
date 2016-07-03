@@ -52,7 +52,7 @@ public class MyController : Controller
     private readonly IFoo _foo;
     public MyController(IFoo foo)
     {
-        _foo = foo; // foo if the contrete type Foo
+        _foo = foo; // foo of the contrete type Foo
     }
 }
 ```
@@ -88,7 +88,7 @@ public class MyApiController : ApiController
     private readonly IBar _bar;
     public MyController(IBar bar)
     {
-        _bar = bar; // bar if the contrete type Bar
+        _bar = bar; // bar of the contrete type Bar
     }
 }
 ```
