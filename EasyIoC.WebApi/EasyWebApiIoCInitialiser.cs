@@ -14,9 +14,10 @@ namespace EasyIoC.WebApi
         /// Initialise against the called assembly.
         /// </summary>
         /// <param name="configuration"></param>
-        public void Initialise(HttpConfiguration configuration)
+        /// <param name="siteAssembly">Used to source controllers.</param>
+        public void Initialise(HttpConfiguration configuration, Assembly siteAssembly = null)
         {
-            configuration.Services.Replace(typeof(IHttpControllerActivator), new EasyWebApiHttpControllerActivator(Assembly.GetCallingAssembly()));
+            configuration.Services.Replace(typeof(IHttpControllerActivator), new EasyWebApiHttpControllerActivator(siteAssembly));
         }
     }
 }

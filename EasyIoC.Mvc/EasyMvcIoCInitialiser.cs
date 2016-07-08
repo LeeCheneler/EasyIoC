@@ -13,9 +13,10 @@ namespace EasyIoC.Mvc
         /// Initialise against the called assembly.
         /// </summary>
         /// <param name="controllerBuilder"></param>
-        public void Initialise(ControllerBuilder controllerBuilder)
+        /// <param name="siteAssembly">Used to source controllers.</param>
+        public void Initialise(ControllerBuilder controllerBuilder, Assembly siteAssembly)
         {
-            controllerBuilder.SetControllerFactory(new EasyMvcControllerFactory(Assembly.GetCallingAssembly()));
+            controllerBuilder.SetControllerFactory(new EasyMvcControllerFactory(siteAssembly));
         }
     }
 }
