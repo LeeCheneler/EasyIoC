@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EasyWebApiControllerContainer.cs" />
-    <Compile Include="EasyWebApiDependencyResolver.cs" />
+    <Compile Include="EasyWebApiHttpControllerActivator.cs" />
     <Compile Include="EasyWebApiIoCInitialiser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
