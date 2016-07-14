@@ -43,7 +43,7 @@ public class Global : HttpApplication
     public void Application_Start()
     {
         var initialiser = new EasyMvcIoCInitialiser();
-        initialiser.Initialise(ControllerBuilder);
+        initialiser.Initialise(ControllerBuilder, Assembly.GetExecutingAssembly());
     }
 }
 
@@ -78,7 +78,7 @@ public class Global : HttpApplication
                 );
             
             var initialiser = new EasyWebApiIoCInitialiser();
-            initialiser.Initialise(config);
+            initialiser.Initialise(config, Assembly.GetExecutingAssembly());
         }
     }
 }
