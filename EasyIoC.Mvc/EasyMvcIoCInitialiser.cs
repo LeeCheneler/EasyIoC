@@ -4,13 +4,13 @@ using System.Web.Mvc;
 namespace EasyIoC.Mvc
 {
     /// <summary>
-    /// User this initialiser for the default setup, it will register all controllers from the calling assembly.
-    /// When creating controllers it will inject parameters registed by any EasyServiceRegistrars in the calling assembly.
+    /// User this initialiser for the default setup, it will register all controllers from the site assembly passed in.
+    /// When creating controllers it will inject parameters registed by any EasyServiceRegistrars in the site assembly.
     /// </summary>
     public class EasyMvcIoCInitialiser
     {
         /// <summary>
-        /// Initialise against the called assembly.
+        /// Initialise against the site's assembly.
         /// </summary>
         /// <param name="controllerBuilder"></param>
         /// <param name="siteAssembly">Used to source controllers.</param>
